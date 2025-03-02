@@ -1,0 +1,75 @@
+package com.example.farm;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    ImageView imgCrops;
+    Spinner spinnerSeason, spinnerSoil;
+    Button btnSuggest;
+    TextView tvResult;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        spinnerSeason = findViewById(R.id.spinnerSeason);
+        spinnerSoil = findViewById(R.id.spinnerSoil);
+        btnSuggest = findViewById(R.id.btnSuggest);
+        tvResult = findViewById(R.id.tvResult);
+        imgCrops = findViewById(R.id.imgCrop);
+
+
+        btnSuggest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String season = spinnerSeason.getSelectedItem().toString();
+                String soil = spinnerSoil.getSelectedItem().toString();
+                String result = suggestCropAndFertilizer(season, soil);
+                tvResult.setText(result);
+            }
+        });
+    }
+
+    private String suggestCropAndFertilizer(String season, String soil) {
+        if (season.equals("Rainy")) {
+            switch (soil) {
+                case "Clay":
+                    return "Suggested Crop: Rice, Sugarcane, Banana\nFertilizer: Urea, DAP, Potash\nGrowth Period: 120-150 days";
+                case "Blacksoil":
+                    return "Suggested Crop: Maize, Soybean, Cotton, Turmeric\nFertilizer: NPK, Urea, Potash\nGrowth Period: 90-120 days";
+                case "Redsoil":
+                    return "Suggested Crop: Paddy, Millets, Groundnut\nFertilizer: NPK, Urea, Phosphorus\nGrowth Period: 100-130 days";
+            }
+        } else if (season.equals("Winter")) {
+            switch (soil) {
+                case "Clay":
+                    int imageRes = R.drawable.rice_image;
+                    return "Suggested Crop: Wheat, Barley, Oats\nFertilizer: Superphosphate, Potash, Nitrogen\nGrowth Period: 110-140 days";
+                case "Blacksoil":
+                    return "Suggested Crop: Mustard, Chickpea, Lentils\nFertilizer: Nitrogen, Phosphorus, Potassium\nGrowth Period: 90-120 days";
+                case "Redsoil":
+                    return "Suggested Crop: Gram, Lentils, Peas\nFertilizer: Phosphatic fertilizers, Potash\nGrowth Period: 80-110 days";
+            }
+        } else if (season.equals("Summer")) {
+            switch (soil) {
+                case "Clay":
+                    return "Suggested Crop: Vegetables (Tomato, Brinjal, Cucumbers, Pumpkins)\nFertilizer: Organic compost, NPK\nGrowth Period: 60-90 days";
+                case "Blacksoil":
+                    return "Suggested Crop: Cotton, Sunflower, Sesame\nFertilizer: Potash, Urea, Phosphorus\nGrowth Period: 100-150 days";
+                case "Redsoil":
+                    return "Suggested Crop: Groundnut, Watermelon, Melons\nFertilizer: NPK, Organic Manure\nGrowth Period: 80-120 days";
+            }
+        }
+        return "No suitable crop found for the selected combination.";
+    }
+}
